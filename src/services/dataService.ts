@@ -268,7 +268,7 @@ export function getRealisticEmployeeName(index: number): string {
   return `${capF} ${capL}`;
 }
 
-// Generate 305 master records (total 305, 9 programs, certs: 172 BNSP, 33 ISO 15489, 45 PUR/LSB, 98 Tanpa Sertifikasi)
+// Generate 304 master records
 export function generateInitialPMKData(): PMKRecord[] {
   const records: PMKRecord[] = [];
   const units = UNIT_KERJA_LIST.slice(1);
@@ -282,7 +282,7 @@ export function generateInitialPMKData(): PMKRecord[] {
   ];
   const programTypes = ['Self Learning', 'Workshop', 'Sertifikasi Profesi', 'E-Learning', 'On the Job Training'];
 
-  for (let i = 1; i <= 305; i++) {
+  for (let i = 1; i <= 304; i++) {
     const id = `pmk-2026-${String(i).padStart(4, '0')}`;
     const nip = `199${Math.floor(10 + (i % 80))}0${(i % 9) + 1}${String(10 + (i % 18))}-201${Math.floor(i % 10)}0${(i % 8) + 1}-1-${String(i).padStart(3, '0')}`;
     
@@ -808,8 +808,12 @@ export class DataRepository {
     try {
       const savedPmk = localStorage.getItem(STORAGE_KEYS.PMK);
       if (savedPmk) {
-        const parsed: PMKRecord[] = JSON.parse(savedPmk);
+        let parsed: PMKRecord[] = JSON.parse(savedPmk);
         let modified = false;
+        if (parsed.length === 305) {
+          parsed = parsed.slice(0, 304);
+          modified = true;
+        }
         parsed.forEach((r, idx) => {
           if (r.namaPegawai.startsWith('Pegawai BI ')) {
             r.namaPegawai = getRealisticEmployeeName(idx + 1);
@@ -1562,14 +1566,99 @@ export class DataRepository {
     return newCert;
   }
 
-  public deleteCertificate(id: string): boolean {
+  public updateCertificate(updated: DigitalCertificate, actorName = 'Admin'): boolean {
+    const idx = this.certificates.findIndex(c => c.id === updated.id);
+    if (idx !== -1) {
+      this.certificates[idx] = updated;
+      this.saveCertificates();
+      this.logActivity({
+        userId: updated.nip,
+        userName: actorName,
+        action: 'USER_UPDATE',
+        module: 'Sertifikasi',
+        details: `Memperbarui sertifikat digital: ${updated.programTitle} (${updated.certType}) untuk ${updated.recipientName}`,
+        status: 'Success'
+      });
+      return true;
+    }
+    return false;
+  }
+
+  public deleteCertificate(id: string, actorName = 'Admin'): boolean {
+    const target = this.certificates.find(c => c.id === id);
     const prev = this.certificates.length;
     this.certificates = this.certificates.filter(c => c.id !== id);
     if (this.certificates.length < prev) {
       this.saveCertificates();
+      if (target) {
+        this.logActivity({
+          userId: target.nip,
+          userName: actorName,
+          action: 'USER_DELETE',
+          module: 'Sertifikasi',
+          details: `Menghapus sertifikat digital: ${target.programTitle} (${target.recipientName})`,
+          status: 'Warning'
+        });
+      }
       return true;
     }
     return false;
+  }
+
+  // Summary Metrics Overrides (Synced between Dashboard & Sertifikasi)
+  public getSummaryMetricsOverrides(): {
+    totalPeserta: number;
+    program: number;
+    denganSertifikasi: number;
+    tanpaSertifikasi: number;
+    bnsp: number;
+    iso15489: number;
+    purLsb: number;
+  } | null {
+    try {
+      const saved = localStorage.getItem('lentera_cert_summary_overrides');
+      if (saved) return JSON.parse(saved);
+    } catch {}
+    return null;
+  }
+
+  public saveSummaryMetricsOverrides(
+    overrides: {
+      totalPeserta: number;
+      program: number;
+      denganSertifikasi: number;
+      tanpaSertifikasi: number;
+      bnsp: number;
+      iso15489: number;
+      purLsb: number;
+    },
+    actorName = 'Admin'
+  ): void {
+    try {
+      localStorage.setItem('lentera_cert_summary_overrides', JSON.stringify(overrides));
+      this.logActivity({
+        userId: 'admin',
+        userName: actorName,
+        action: 'USER_UPDATE',
+        module: 'Sertifikasi',
+        details: `Memperbarui ringkasan statistik sertifikasi (Total Peserta: ${overrides.totalPeserta}, Dengan Sertifikasi: ${overrides.denganSertifikasi}, Tanpa Sertifikasi: ${overrides.tanpaSertifikasi})`,
+        status: 'Success'
+      });
+    } catch {}
+  }
+
+  public resetSummaryMetricsOverrides(actorName = 'Admin'): void {
+    try {
+      localStorage.removeItem('lentera_cert_summary_overrides');
+      this.logActivity({
+        userId: 'admin',
+        userName: actorName,
+        action: 'USER_UPDATE',
+        module: 'Sertifikasi',
+        details: 'Mereset ringkasan statistik sertifikasi ke perhitungan otomatis data peserta',
+        status: 'Success'
+      });
+    } catch {}
   }
 
   // Employee Performance Matrix Generator & Editor

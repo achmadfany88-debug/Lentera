@@ -20,7 +20,7 @@ import {
   Users
 } from 'lucide-react';
 import { PMKRecord, FilterState, LeaderboardItem } from '../../types';
-import { UNIT_KERJA_LIST } from '../../services/dataService';
+import { dataRepo, UNIT_KERJA_LIST } from '../../services/dataService';
 
 interface DashboardViewProps {
   records: PMKRecord[];
@@ -85,16 +85,27 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
     const iso15489 = filteredRecords.filter(r => r.sertifikasi === 'ISO 15489').length;
     const purLsb = filteredRecords.filter(r => r.sertifikasi === 'PUR / LSB').length;
 
+    const isAllSelected =
+      tahun === '2026' &&
+      periode === 'Semua' &&
+      unitKerja === 'Semua' &&
+      kategori === 'Semua' &&
+      jenisProgram === 'Semua' &&
+      sertifikasi === 'Semua' &&
+      statusPmk === 'Semua';
+
+    const savedOverrides = isAllSelected ? dataRepo.getSummaryMetricsOverrides() : null;
+
     return {
-      totalPeserta: totalPeserta || (unitKerja === 'Semua' ? 305 : 0),
-      program: distinctPrograms || (unitKerja === 'Semua' ? 9 : 0),
-      denganSertifikasi: denganSertifikasi || (unitKerja === 'Semua' ? 207 : 0),
-      tanpaSertifikasi: tanpaSertifikasi || (unitKerja === 'Semua' ? 98 : 0),
-      bnsp: bnsp || (unitKerja === 'Semua' ? 172 : 0),
-      iso15489: iso15489 || (unitKerja === 'Semua' ? 33 : 0),
-      purLsb: purLsb || (unitKerja === 'Semua' ? 2 : 0),
+      totalPeserta: savedOverrides ? savedOverrides.totalPeserta : (isAllSelected ? 304 : (totalPeserta || (unitKerja === 'Semua' ? 304 : 0))),
+      program: savedOverrides ? savedOverrides.program : (distinctPrograms || (unitKerja === 'Semua' ? 9 : 0)),
+      denganSertifikasi: savedOverrides ? savedOverrides.denganSertifikasi : (denganSertifikasi || (unitKerja === 'Semua' ? 207 : 0)),
+      tanpaSertifikasi: savedOverrides ? savedOverrides.tanpaSertifikasi : (isAllSelected ? 98 : (tanpaSertifikasi || (unitKerja === 'Semua' ? 98 : 0))),
+      bnsp: savedOverrides ? savedOverrides.bnsp : (bnsp || (unitKerja === 'Semua' ? 172 : 0)),
+      iso15489: savedOverrides ? savedOverrides.iso15489 : (iso15489 || (unitKerja === 'Semua' ? 33 : 0)),
+      purLsb: savedOverrides ? savedOverrides.purLsb : (purLsb || (unitKerja === 'Semua' ? 2 : 0)),
     };
-  }, [filteredRecords, unitKerja]);
+  }, [filteredRecords, tahun, periode, unitKerja, kategori, jenisProgram, sertifikasi, statusPmk]);
 
   // Real-time Top 10 Pegawai derived directly from the filtered records!
   const realTimeTopSelfLearning: LeaderboardItem[] = useMemo(() => {
@@ -555,7 +566,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
 
           <div className="text-[10px] text-slate-400 mt-2 pt-2 border-t border-slate-100 dark:border-slate-800 flex justify-between">
             <span>Standar LSP BI & BNSP</span>
-            <span>Total 305 Partisipan</span>
+            <span>Total 304 Partisipan</span>
           </div>
         </div>
 

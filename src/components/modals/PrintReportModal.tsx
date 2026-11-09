@@ -94,7 +94,7 @@ export const PrintReportModal: React.FC<PrintReportModalProps> = ({
           <div className="grid grid-cols-3 sm:grid-cols-6 gap-2 my-4 text-center">
             <div className="p-2.5 rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800">
               <div className="text-[10px] text-slate-400 font-bold uppercase">PESERTA</div>
-              <div className="text-lg font-black text-slate-900 dark:text-white">305</div>
+              <div className="text-lg font-black text-slate-900 dark:text-white">304</div>
             </div>
             <div className="p-2.5 rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800">
               <div className="text-[10px] text-slate-400 font-bold uppercase">PROGRAM</div>

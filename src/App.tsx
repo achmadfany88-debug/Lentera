@@ -261,7 +261,14 @@ export default function App() {
             )}
 
             {activeTab === 'sertifikasi' && (
-              <SertifikasiView records={records} currentUser={currentUser} />
+              <SertifikasiView
+                records={records}
+                currentUser={currentUser}
+                onRefreshRecords={() => {
+                  setRecords([...dataRepo.getPMKData()]);
+                  setAuditLogs([...dataRepo.getAuditLogs()]);
+                }}
+              />
             )}
 
             {activeTab === 'analisis-kompetensi' && (

@@ -109,7 +109,7 @@ export const RealisasiPmkView: React.FC<RealisasiPmkViewProps> = ({ records }) =
             <CheckCircle className="w-4 h-4 text-emerald-600" />
           </div>
           <div className="text-2xl font-extrabold text-slate-900 dark:text-white mt-2 tabular-nums">
-            284 / 305
+            284 / 304
           </div>
           <div className="text-[11px] text-emerald-600 font-medium mt-1">93.1% Tingkat Kelulusan</div>
         </div>

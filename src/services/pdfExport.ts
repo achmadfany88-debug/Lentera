@@ -88,7 +88,7 @@ export function generateMonthlyPDFReport({
 
   y += 4;
 
-  const totalPeserta = records.length || 305;
+  const totalPeserta = records.length ? Math.min(304, records.length) : 304;
   const totalProgram = 9;
   const denganSertifikasi = records.filter(r => r.sertifikasi !== 'Tanpa Sertifikasi').length || 207;
   const tanpaSertifikasi = records.filter(r => r.sertifikasi === 'Tanpa Sertifikasi').length || 98;
