@@ -1,0 +1,6 @@
+{
+  "name": "LENTERA - Dual-Loop Learning Dashboard KPw BI Jatim",
+  "description": "Platform modern LENTERA (Learning, Enrichment, Transformation, and Evaluation for Resulting Advancement) KPw Bank Indonesia Provinsi Jawa Timur.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
