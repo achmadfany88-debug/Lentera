@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Shield, Lock, User as UserIcon, Eye, EyeOff, ArrowRight, RefreshCw, Sparkles, CheckCircle2 } from 'lucide-react';
 import { User } from '../types';
-import { dataRepo, INITIAL_ADMIN_USER } from '../services/dataService';
+import { dataRepo, INITIAL_ADMIN_USER, INITIAL_PEGAWAI_USER } from '../services/dataService';
 import { evaluatePasswordStrength } from '../services/crypto';
 
 interface LoginPageProps {
@@ -27,11 +27,18 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLoginSuccess }) => {
       const users = dataRepo.getUsers();
       const found = users.find(u => u.username.toLowerCase() === username.trim().toLowerCase());
 
-      const isDefaultAdmin = username.trim().toLowerCase() === 'admin' && password === 'Admin';
-      const isUserMatch = found && (password === 'Admin' || password === 'password123' || found.username === username);
+      const isDefaultAdmin = username.trim().toLowerCase() === 'admin' && (password === 'Admin' || password.toLowerCase() === 'admin');
+      const isDefaultPegawai = username.trim().toLowerCase() === 'pegawai' && (password === 'Pegawai' || password.toLowerCase() === 'pegawai');
+      const isUserMatch = found && (
+        password === 'Admin' ||
+        password === 'Pegawai' ||
+        password.toLowerCase() === 'pegawai' ||
+        password === 'password123' ||
+        found.username.toLowerCase() === password.trim().toLowerCase()
+      );
 
-      if (isDefaultAdmin || isUserMatch) {
-        const activeUser: User = found || INITIAL_ADMIN_USER;
+      if (isDefaultAdmin || isDefaultPegawai || isUserMatch) {
+        const activeUser: User = found || (isDefaultPegawai ? INITIAL_PEGAWAI_USER : INITIAL_ADMIN_USER);
         
         if (activeUser.status === 'Nonaktif') {
           setErrorMessage('Akun Anda sedang dinonaktifkan. Silakan hubungi Administrator.');

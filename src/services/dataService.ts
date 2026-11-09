@@ -51,8 +51,36 @@ export const INITIAL_ADMIN_USER: User = {
   allowedMenus: [...ALL_MENU_IDS],
 };
 
+export const PEGAWAI_DEFAULT_MENUS: NavTabId[] = [
+  'dashboard',
+  'realisasi-pmk',
+  'sertifikasi',
+  'bank-kasus',
+  'pembelajaran-internal',
+  'survei-level-3',
+  'data-pmk',
+  'tentang-lentera',
+];
+
+export const INITIAL_PEGAWAI_USER: User = {
+  id: 'usr-pegawai-001',
+  username: 'Pegawai',
+  fullName: 'Pegawai BI Jatim',
+  nip: '19920510-201601-1-007',
+  email: 'pegawai.lentera@bi.go.id',
+  role: 'Pegawai',
+  unitKerja: 'Unit Implementasi Kebijakan SP & PK',
+  status: 'Aktif',
+  createdAt: '2026-01-15 08:30:00',
+  lastLogin: '2026-11-08 08:00:00',
+  passwordHash: '',
+  salt: '9f8e7d6c5b4a3210',
+  allowedMenus: [...PEGAWAI_DEFAULT_MENUS],
+};
+
 export const INITIAL_TEAM_USERS: User[] = [
   INITIAL_ADMIN_USER,
+  INITIAL_PEGAWAI_USER,
   {
     id: 'usr-002',
     username: 'fany.achmad',
@@ -107,17 +135,7 @@ export const INITIAL_TEAM_USERS: User[] = [
     lastLogin: '2026-11-06 14:20:00',
     passwordHash: '',
     salt: '123456789abcdef0',
-    allowedMenus: [
-      'dashboard',
-      'realisasi-pmk',
-      'sertifikasi',
-      'bank-kasus',
-      'pembelajaran-internal',
-      'survei-level-3',
-      'data-pmk',
-      'performa-pegawai',
-      'tentang-lentera',
-    ],
+    allowedMenus: [...PEGAWAI_DEFAULT_MENUS],
   },
   {
     id: 'usr-005',
@@ -132,17 +150,7 @@ export const INITIAL_TEAM_USERS: User[] = [
     lastLogin: '2026-11-05 10:05:00',
     passwordHash: '',
     salt: '0fedcba987654321',
-    allowedMenus: [
-      'dashboard',
-      'realisasi-pmk',
-      'sertifikasi',
-      'bank-kasus',
-      'pembelajaran-internal',
-      'survei-level-3',
-      'data-pmk',
-      'performa-pegawai',
-      'tentang-lentera',
-    ],
+    allowedMenus: [...PEGAWAI_DEFAULT_MENUS],
   },
   {
     id: 'usr-006',
@@ -157,14 +165,7 @@ export const INITIAL_TEAM_USERS: User[] = [
     lastLogin: '2026-10-15 09:00:00',
     passwordHash: '',
     salt: '4a5b6c7d8e9f0123',
-    allowedMenus: [
-      'dashboard',
-      'realisasi-pmk',
-      'sertifikasi',
-      'bank-kasus',
-      'pembelajaran-internal',
-      'tentang-lentera',
-    ],
+    allowedMenus: [...PEGAWAI_DEFAULT_MENUS],
   }
 ];
 
@@ -785,7 +786,16 @@ export class DataRepository {
     try {
       const savedUsers = localStorage.getItem(STORAGE_KEYS.USERS);
       if (savedUsers) {
-        this.users = JSON.parse(savedUsers);
+        const parsed: User[] = JSON.parse(savedUsers);
+        const existingPegawai = parsed.find(u => u.username.toLowerCase() === 'pegawai');
+        if (!existingPegawai) {
+          parsed.splice(1, 0, INITIAL_PEGAWAI_USER);
+        } else {
+          existingPegawai.allowedMenus = [...PEGAWAI_DEFAULT_MENUS];
+          existingPegawai.status = 'Aktif';
+        }
+        this.users = parsed;
+        this.saveUsers();
       } else {
         this.users = [...INITIAL_TEAM_USERS];
         this.saveUsers();

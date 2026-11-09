@@ -602,19 +602,19 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
 
       </div>
 
-      {/* ALL-MENU EXECUTIVE SUMMARY (RINGKASAN SEMUA MENU SECARA REALTIME) */}
-      <div className="bg-gradient-to-br from-[#0c2340] to-[#08182b] rounded-3xl p-6 text-white shadow-xl border border-sky-900/40">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-white/10 gap-2">
+      {/* ALL-MENU EXECUTIVE SUMMARY (INFORMASI MENU NAVIGASI SECARA REALTIME - TEMA CERAH) */}
+      <div className="bg-white dark:bg-[#0c182c] rounded-3xl p-6 text-slate-800 dark:text-white shadow-xs border border-slate-200/80 dark:border-slate-800 transition-colors">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-slate-100 dark:border-slate-800 gap-2">
           <div>
-            <span className="text-[10px] font-extrabold uppercase tracking-wider text-emerald-400">
-              Sinkronisasi Sistem Real-Time
+            <span className="text-[10px] font-extrabold uppercase tracking-wider text-emerald-600 dark:text-emerald-400">
+              Informasi Menu Navigasi &bull; Sinkronisasi Real-Time
             </span>
-            <h3 className="text-base sm:text-lg font-black text-white mt-0.5">
-              Ringkasan Eksekutif Seluruh Menu LENTERA
+            <h3 className="text-base sm:text-lg font-black text-[#0c2340] dark:text-white mt-0.5">
+              Ringkasan Informasi Seluruh Menu Navigasi LENTERA
             </h3>
           </div>
-          <span className="text-xs text-slate-300">
-            Terhubung otomatis ke seluruh modul pembelajaran & evaluasi
+          <span className="text-xs text-slate-500 dark:text-slate-400">
+            Klik kartu di bawah untuk membuka modul navigasi terkait
           </span>
         </div>
 
@@ -623,61 +623,61 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
           {/* Menu 1: Realisasi PMK */}
           <div 
             onClick={() => onNavigateTab && onNavigateTab('realisasi-pmk')}
-            className="p-3.5 rounded-2xl bg-white/5 hover:bg-white/10 border border-white/10 transition cursor-pointer"
+            className="p-3.5 rounded-2xl bg-slate-50/80 hover:bg-emerald-50/70 dark:bg-slate-900/60 dark:hover:bg-slate-800 border border-slate-200/70 dark:border-slate-800 transition cursor-pointer"
           >
-            <div className="text-[10px] text-emerald-400 font-bold uppercase">Realisasi PMK</div>
-            <div className="text-xl font-black mt-1">18,115j</div>
-            <div className="text-[10px] text-slate-300 mt-0.5">119% dari Target Tahunan</div>
+            <div className="text-[10px] text-emerald-600 dark:text-emerald-400 font-bold uppercase">Realisasi PMK</div>
+            <div className="text-xl font-black text-[#0c2340] dark:text-white mt-1">18,115j</div>
+            <div className="text-[10px] text-slate-500 dark:text-slate-400 mt-0.5">119% dari Target Tahunan</div>
           </div>
 
           {/* Menu 2: Sertifikasi */}
           <div 
             onClick={() => onNavigateTab && onNavigateTab('sertifikasi')}
-            className="p-3.5 rounded-2xl bg-white/5 hover:bg-white/10 border border-white/10 transition cursor-pointer"
+            className="p-3.5 rounded-2xl bg-slate-50/80 hover:bg-sky-50/70 dark:bg-slate-900/60 dark:hover:bg-slate-800 border border-slate-200/70 dark:border-slate-800 transition cursor-pointer"
           >
-            <div className="text-[10px] text-sky-400 font-bold uppercase">Sertifikasi</div>
-            <div className="text-xl font-black mt-1">207 Org</div>
-            <div className="text-[10px] text-slate-300 mt-0.5">BNSP, ISO, PUR/LSB</div>
+            <div className="text-[10px] text-sky-600 dark:text-sky-400 font-bold uppercase">Sertifikasi</div>
+            <div className="text-xl font-black text-[#0c2340] dark:text-white mt-1">207 Org</div>
+            <div className="text-[10px] text-slate-500 dark:text-slate-400 mt-0.5">BNSP, ISO, PUR/LSB</div>
           </div>
 
           {/* Menu 3: Bank Kasus */}
           <div 
             onClick={() => onNavigateTab && onNavigateTab('bank-kasus')}
-            className="p-3.5 rounded-2xl bg-white/5 hover:bg-white/10 border border-white/10 transition cursor-pointer"
+            className="p-3.5 rounded-2xl bg-slate-50/80 hover:bg-amber-50/70 dark:bg-slate-900/60 dark:hover:bg-slate-800 border border-slate-200/70 dark:border-slate-800 transition cursor-pointer"
           >
-            <div className="text-[10px] text-amber-400 font-bold uppercase">Bank Kasus</div>
-            <div className="text-xl font-black mt-1">6 Studi</div>
-            <div className="text-[10px] text-slate-300 mt-0.5">11 Kategori Pembahasan</div>
+            <div className="text-[10px] text-amber-600 dark:text-amber-400 font-bold uppercase">Bank Kasus</div>
+            <div className="text-xl font-black text-[#0c2340] dark:text-white mt-1">6 Studi</div>
+            <div className="text-[10px] text-slate-500 dark:text-slate-400 mt-0.5">11 Kategori Pembahasan</div>
           </div>
 
           {/* Menu 4: Pembelajaran Internal */}
           <div 
             onClick={() => onNavigateTab && onNavigateTab('pembelajaran-internal')}
-            className="p-3.5 rounded-2xl bg-white/5 hover:bg-white/10 border border-white/10 transition cursor-pointer"
+            className="p-3.5 rounded-2xl bg-slate-50/80 hover:bg-purple-50/70 dark:bg-slate-900/60 dark:hover:bg-slate-800 border border-slate-200/70 dark:border-slate-800 transition cursor-pointer"
           >
-            <div className="text-[10px] text-purple-400 font-bold uppercase">Pembelajaran</div>
-            <div className="text-xl font-black mt-1">3 Modul</div>
-            <div className="text-[10px] text-slate-300 mt-0.5">Self-Learning Mandiri</div>
+            <div className="text-[10px] text-purple-600 dark:text-purple-400 font-bold uppercase">Pembelajaran</div>
+            <div className="text-xl font-black text-[#0c2340] dark:text-white mt-1">3 Modul</div>
+            <div className="text-[10px] text-slate-500 dark:text-slate-400 mt-0.5">Self-Learning Mandiri</div>
           </div>
 
           {/* Menu 5: Survei Level 3 */}
           <div 
             onClick={() => onNavigateTab && onNavigateTab('survei-level-3')}
-            className="p-3.5 rounded-2xl bg-white/5 hover:bg-white/10 border border-white/10 transition cursor-pointer"
+            className="p-3.5 rounded-2xl bg-slate-50/80 hover:bg-emerald-50/70 dark:bg-slate-900/60 dark:hover:bg-slate-800 border border-slate-200/70 dark:border-slate-800 transition cursor-pointer"
           >
-            <div className="text-[10px] text-emerald-400 font-bold uppercase">Survei Level 3</div>
-            <div className="text-xl font-black mt-1">4.62 / 5</div>
-            <div className="text-[10px] text-slate-300 mt-0.5">Skor Kepatuhan Perilaku</div>
+            <div className="text-[10px] text-emerald-600 dark:text-emerald-400 font-bold uppercase">Survei Level 3</div>
+            <div className="text-xl font-black text-[#0c2340] dark:text-white mt-1">4.62 / 5</div>
+            <div className="text-[10px] text-slate-500 dark:text-slate-400 mt-0.5">Skor Kepatuhan Perilaku</div>
           </div>
 
           {/* Menu 6: Data PMK */}
           <div 
             onClick={() => onNavigateTab && onNavigateTab('data-pmk')}
-            className="p-3.5 rounded-2xl bg-white/5 hover:bg-white/10 border border-white/10 transition cursor-pointer"
+            className="p-3.5 rounded-2xl bg-slate-50/80 hover:bg-rose-50/70 dark:bg-slate-900/60 dark:hover:bg-slate-800 border border-slate-200/70 dark:border-slate-800 transition cursor-pointer"
           >
-            <div className="text-[10px] text-rose-400 font-bold uppercase">PMK Mendatang</div>
-            <div className="text-xl font-black mt-1">15 Batch</div>
-            <div className="text-[10px] text-slate-300 mt-0.5">Hitung Mundur Pendaftaran</div>
+            <div className="text-[10px] text-rose-600 dark:text-rose-400 font-bold uppercase">PMK Mendatang</div>
+            <div className="text-xl font-black text-[#0c2340] dark:text-white mt-1">15 Batch</div>
+            <div className="text-[10px] text-slate-500 dark:text-slate-400 mt-0.5">Hitung Mundur Pendaftaran</div>
           </div>
 
         </div>

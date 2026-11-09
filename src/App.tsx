@@ -45,12 +45,13 @@ export default function App() {
     }
   });
 
-  // Dark Mode State
+  // Light Mode Default State (Always starts in bright/light theme unless manually toggled)
   const [isDarkMode, setIsDarkMode] = useState<boolean>(() => {
     try {
-      const saved = localStorage.getItem('lentera_theme_pref');
-      if (saved !== null) return saved === 'dark';
-      return window.matchMedia('(prefers-color-scheme: dark)').matches;
+      localStorage.removeItem('lentera_theme_pref');
+      const saved = localStorage.getItem('lentera_theme_light_default');
+      if (saved === 'dark') return true;
+      return false;
     } catch {
       return false;
     }
@@ -81,10 +82,10 @@ export default function App() {
   useEffect(() => {
     if (isDarkMode) {
       document.documentElement.classList.add('dark');
-      localStorage.setItem('lentera_theme_pref', 'dark');
+      localStorage.setItem('lentera_theme_light_default', 'dark');
     } else {
       document.documentElement.classList.remove('dark');
-      localStorage.setItem('lentera_theme_pref', 'light');
+      localStorage.setItem('lentera_theme_light_default', 'light');
     }
   }, [isDarkMode]);
 
@@ -173,6 +174,13 @@ export default function App() {
     return (
       <LoginPage 
         onLoginSuccess={(user) => {
+          setIsDarkMode(false);
+          document.documentElement.classList.remove('dark');
+          localStorage.setItem('lentera_theme_light_default', 'light');
+          const defaultNav: NavTabId = (user.allowedMenus && user.allowedMenus.length > 0)
+            ? user.allowedMenus[0]
+            : 'dashboard';
+          setActiveTab(defaultNav);
           setCurrentUser(user);
           setUsers(dataRepo.getUsers());
           setRecords(dataRepo.getPMKData());
